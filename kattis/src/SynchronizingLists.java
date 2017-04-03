@@ -1,4 +1,3 @@
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
 
@@ -6,7 +5,7 @@ import java.util.Scanner;
 public class SynchronizingLists {
     public static void main(String[] args) {
         Scanner scn = new Scanner(System.in);
-        int n = 0;
+        int n;
 
         do{
             n = scn.nextInt();

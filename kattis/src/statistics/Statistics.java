@@ -1,47 +1,40 @@
-/** Simple yet moderately fast I/O routines.
- *
- * Example usage:
- *
- * Kattio io = new Kattio(System.in, System.out);
- *
- * while (io.hasMoreTokens()) {
- *    int n = io.getInt();
- *    double d = io.getDouble();
- *    double ans = d*n;
- *
- *    io.println("Answer: " + ans);
- * }
- *
- * io.close();
- *
- *
- * Some notes:
- *
- * - When done, you should always do io.close() or io.flush() on the
- *   Kattio-instance, otherwise, you may lose output.
- *
- * - The getInt(), getDouble(), and getLong() methods will throw an
- *   exception if there is no more data in the input, so it is generally
- *   a good idea to use hasMoreTokens() to check for end-of-file.
- *
- * @author: Kattis
- */
-package kattio;
+package statistics;
 
+import java.io.*;
+import java.util.Arrays;
 import java.util.StringTokenizer;
-import java.io.BufferedReader;
-import java.io.BufferedOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.io.OutputStream;
 
-public class kattio extends PrintWriter {
+//Created by RakNoel, 02.04.2017.
+public class Statistics {
+    public static void main(String[] args) {
+        kattio kattio = new kattio(System.in, System.out);
+        int counter = 0;
+        while (kattio.hasMoreTokens()){
+            int n = kattio.getInt();
+            int[] num = new int[n];
+
+            for(int i = 0; i < n; i++)
+                num[i] = kattio.getInt();
+
+            int max = Arrays.stream(num).max().getAsInt();
+            int min = Arrays.stream(num).min().getAsInt();
+
+            System.out.println("Case " + ++counter + ": " + min + " " + max + " " + (max-min));
+        }
+    }
+}
+
+class kattio extends PrintWriter {
+    private BufferedReader r;
+    private String line;
+    private StringTokenizer st;
+    private String token;
+
     public kattio(InputStream i) {
         super(new BufferedOutputStream(System.out));
         r = new BufferedReader(new InputStreamReader(i));
     }
+
     public kattio(InputStream i, OutputStream o) {
         super(new BufferedOutputStream(o));
         r = new BufferedReader(new InputStreamReader(i));
@@ -67,13 +60,6 @@ public class kattio extends PrintWriter {
         return nextToken();
     }
 
-
-
-    private BufferedReader r;
-    private String line;
-    private StringTokenizer st;
-    private String token;
-
     private String peekToken() {
         if (token == null)
             try {
@@ -83,7 +69,8 @@ public class kattio extends PrintWriter {
                     st = new StringTokenizer(line);
                 }
                 token = st.nextToken();
-            } catch (IOException e) { }
+            } catch (IOException e) {
+            }
         return token;
     }
 
