@@ -30,4 +30,11 @@ public class ABC {
                 .map(x -> x - (int) 'A')                            //Map all integers to be [A,B,C] -> [0,1,2];
                 .forEach(x -> System.out.print(tall[x] + " "));     //Print from sorted numbers; for ( x : {0,1,2} )
     }
+
+//    public static void main(String[] args){
+//        Scanner scn = new Scanner(System.in);
+//        int[] tall = Arrays.stream(scn.nextLine().split(" ")).mapToInt(Integer::parseInt).sorted().toArray();
+//        scn.nextLine().chars().map(x -> x - (int) 'A').forEach(x -> System.out.print(tall[x] + " "));
+//    }
 }
+
