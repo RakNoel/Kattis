@@ -20,7 +20,7 @@ public class ABC {
     public static void main(String[] args) {
         Scanner scn = new Scanner(System.in);
         int[] tall = Arrays.stream(scn.nextLine()
-                .split(" "))                                   //Split to char array
+                .split(" "))                                        //Split to char array
                 .mapToInt(Integer::parseInt)                        //Convert all chars to integers
                 .sorted()                                           //Sort the integers
                 .toArray();                                         //Export as int[]
