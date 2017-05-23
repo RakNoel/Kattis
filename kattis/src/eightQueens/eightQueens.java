@@ -21,10 +21,8 @@ public class eightQueens {
         }
 
 
-        if (grid.checkGrid())
-            System.out.println("valid");
-        else
-            System.out.println("invalid");
+
+        System.out.println((grid.checkGrid()) ? "valid" : "invalid");
 
     }
 }
