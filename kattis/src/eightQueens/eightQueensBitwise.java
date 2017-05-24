@@ -8,6 +8,7 @@ public class eightQueensBitwise {
 
     public static void main(String[] args) {
         kattio kattio = new kattio(System.in, System.out);
+
         long grid = 0x00;
         byte columnCheck = 0x00;
 
