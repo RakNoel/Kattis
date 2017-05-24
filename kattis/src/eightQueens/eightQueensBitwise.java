@@ -4,7 +4,7 @@ import java.io.*;
 import java.util.StringTokenizer;
 
 //Created by RakNoel, 23.05.2017.
-public class queensBit {
+public class eightQueensBitwise {
 
     public static void main(String[] args) {
         kattio kattio = new kattio(System.in, System.out);
