@@ -5,5 +5,9 @@ someFunc :: (Num a) => a -> a -> a
 someFunc a b = abs (a - b)
 
 main = do
-    [n, m] <- fmap ((map read) . words) getLine
-    print (someFunc n m)
+    [a, b] <- fmap ((map read) . words) getLine
+    [c, d] <- fmap ((map read) . words) getLine
+    [e, f] <- fmap ((map read) . words) getLine
+    print (someFunc a b)
+    print (someFunc c d)
+    print (someFunc e f)
