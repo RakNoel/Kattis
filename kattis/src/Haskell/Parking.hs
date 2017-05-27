@@ -3,10 +3,10 @@ module Main where
 --Main solution function
 solve :: [Int] -> Int
 solve xs = do
-
+        --todo
     where priceList = take 3 xs
 
---Find times
+--Find times todo
 findTimes
 
 --Pseudo code!!
