@@ -1,10 +1,7 @@
 module Main where
 
 solve :: [Integer] -> [Integer]
-solve xs =
-    if length xs == 0
-    then []
-    else (abs ((xs !! 0) - (xs !! 1))) : solve (drop 2 xs)
+solve xs = (abs ((xs !! 0) - (xs !! 1))) : solve (drop 2 xs)
 
 --Input output
 readInput = (map read) . words
