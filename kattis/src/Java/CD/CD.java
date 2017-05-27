@@ -1,4 +1,4 @@
-package CD;
+package Java.CD;
 
 import java.io.*;
 import java.util.StringTokenizer;

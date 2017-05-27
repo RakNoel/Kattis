@@ -1,4 +1,4 @@
-package queens;
+package Java.queens;
 
 import java.io.*;
 import java.util.ArrayList;

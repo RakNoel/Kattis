@@ -1,4 +1,4 @@
-package eightQueens;
+package Java.eightQueens;
 
 import java.io.*;
 import java.util.StringTokenizer;

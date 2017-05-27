@@ -1,3 +1,5 @@
+package Java;
+
 import java.util.Scanner;
 
 //Created by RakNoel, 28.03.2017.

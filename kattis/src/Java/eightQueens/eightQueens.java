@@ -1,4 +1,4 @@
-package eightQueens;
+package Java.eightQueens;
 
 import java.util.ArrayList;
 import java.util.Scanner;
