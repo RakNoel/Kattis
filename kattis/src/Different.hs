@@ -1,16 +1,7 @@
-module Main where
-import Prelude
-import Control.Monad
+solve [] = []
+solve (a:b:rest) = abs(a - b):(solve rest)
 
-someFunc :: (Num a) => a -> a -> a
-someFunc a b = abs (a - b)
+readInput = (map read) . words
+writeOutput = unlines . (map show)
 
-main :: IO()
-main = do
-    fLine <- getLine
-    if null fLine
-        then return()
-        else do
-            let readline = words fLine in
-                print (someFunc (read (head readline)) (read (last readline)))
-            main
+main = interact (writeOutput . solve . readInput)
