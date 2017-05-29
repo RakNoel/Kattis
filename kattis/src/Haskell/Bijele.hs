@@ -9,4 +9,4 @@ writeOutput = unlines . (map show)
 
 --Reads in, solves, prints out
 main :: IO()
-main = interact (writeOutput . solve . readInput)
+main = interact $ writeOutput . solve . readInput

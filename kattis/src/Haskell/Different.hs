@@ -1,12 +1,12 @@
 module Main where
 
-solve :: [Integer] -> [Integer]
-solve xs = (abs ((xs !! 0) - (xs !! 1))) : solve (drop 2 xs)
+solve :: [Int] -> Int
+solve [a,b] = abs (a - b)
+solve _ = 0
 
 --Input output
 readInput = (map read) . words
-writeOutput = unlines . (map show)
 
 --Reads in, solves, prints out
 main :: IO()
-main = interact (writeOutput . solve . readInput)
+main = interact (show . solve . readInput)

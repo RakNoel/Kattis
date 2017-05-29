@@ -9,5 +9,5 @@ readInput = (map read) . words
 --Reads in, solves, prints out
 main :: IO()
 main = do
-    discard <- getLine
-    interact (show . solve . readInput)
+    getLine
+    interact $ show . solve . readInput
