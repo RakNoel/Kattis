@@ -4,11 +4,11 @@ solve :: [Int] -> Int
 solve xs = calculate xs (sum xs)
 
 calculate :: [Int] -> Int -> Int
-calculate [x] _ = x
-calculate xs tot
-    | tot - h == h = h
-    |otherwise = calculate (drop 1 xs) tot
-    where h = head xs
+calculate [] _ = error "No solution"
+calculate (x:xs) tot
+    | tot - x == x = x
+    | tot - x == 0 = x
+    | otherwise = calculate xs tot
 
 readLine :: String -> [Int]
 readLine = (map read) . words
