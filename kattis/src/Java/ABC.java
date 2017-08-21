@@ -14,6 +14,8 @@ import java.util.Scanner;
  * would give:
  * 3 2 1
  *
+ * yolo
+ *
  * @author RakNoel
  * @version 3.0
  * @since 03.04.2017
