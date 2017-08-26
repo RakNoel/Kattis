@@ -4,7 +4,6 @@ import java.io.*;
 import java.util.StringTokenizer;
 
 //Created by RakNoel, 23.05.2017.
-
 public class eightQueensBitwise {
 
     public static void main(String[] args) {
@@ -13,7 +12,7 @@ public class eightQueensBitwise {
         long grid = 0x00;
         byte columnCheck = 0x00;
 
-//      Reads inn all values and adds them to a long for bitwise array
+//      Reads inn all values and adds them to a long only to use bit values
         for (byte row = 7; row >= 0; row--) {
             boolean linecheck = false;
             char[] line = kattio.getWord().toCharArray();
@@ -36,6 +35,7 @@ public class eightQueensBitwise {
             System.out.println("invalid");
             return;
         }
+
 
 //        //TESTING!!!!!
 //        long grid = Long.parseLong("-9222800285438573536");
