@@ -40,6 +40,11 @@ public class eightQueensBitwise {
 //        //TESTING!!!!!
 //        long grid = Long.parseLong("-9222800285438573536");
 
+
+        System.out.println(checkBitwiseGrid(grid) ? "valid" : "invalid");
+    }
+
+    public static boolean checkBitwiseGrid(long grid){
         long clone1 = grid; // /
         long clone2 = grid; // \
         long mask1 = ~Long.valueOf("72340172838076673"); //Clean column 0
@@ -50,14 +55,11 @@ public class eightQueensBitwise {
             clone1 = (mask2 & clone1) >>> 7;
             clone2 = (mask1 & clone2) >>> 9;
 
-            if ( (clone1 & grid) != 0L || (clone2 & grid) != 0L) {
-                System.out.println("invalid");
-                return;
-            }
+            if ( (clone1 & grid) != 0L || (clone2 & grid) != 0L)
+                return false;
         }
 
-        System.out.println("valid");
-
+        return true;
     }
 }
 
