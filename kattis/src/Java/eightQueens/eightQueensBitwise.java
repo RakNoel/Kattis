@@ -9,53 +9,38 @@ public class eightQueensBitwise {
 
     public static void main(String[] args) {
         kattio kattio = new kattio(System.in, System.out);
-
         long grid = 0x00;
-        byte columnCheck = 0x00;
+        int count = 0;
 
 //      Reads inn all values and adds them to a long for bitwise array
         for (byte row = 7; row >= 0; row--) {
-            boolean linecheck = false;
             char[] line = kattio.getWord().toCharArray();
-            for (byte x = 7, y = 0; x >= 0; x--, y++) {
-                if (line[y] == '*' && !linecheck) {
+            for (byte x = 7, y = 0; x >= 0; x--, y++)
+                if (line[y] == '*') {
                     grid |= (1L << (row * 8) + x);
-
-                    //Row and column check while we're at it
-                    linecheck = true;
-                    columnCheck |= (byte) Math.pow(10, x);
-                } else if (line[y] == '*' && linecheck) {
-                    System.out.println("invalid");
-                    return;
+                    count++;
+                    break;
                 }
-            }
         }
 
-        //Check if any of columns are used twice
-        if (columnCheck != -1) {
-            System.out.println("invalid");
-            return;
-        }
-
-//        //TESTING!!!!!
-//        long grid = Long.parseLong("-9222800285438573536");
-
-
-        System.out.println(checkBitwiseGrid(grid) ? "valid" : "invalid");
+        System.out.println((count == 8 && checkBitwiseGrid(grid)) ? "valid" : "invalid");
     }
 
-    public static boolean checkBitwiseGrid(long grid){
+    public static boolean checkBitwiseGrid(long grid) {
         long clone1 = grid; // /
         long clone2 = grid; // \
-        long mask1 = ~Long.valueOf("72340172838076673"); //Clean column 0
-        long mask2 = mask1 << 7; //Clean column 7
+        long clone3 = grid; // -
+        long clone4 = grid; // |
+        long mask1 = ~Long.valueOf("72340172838076673");    //Clean column 0
+        long mask2 = mask1 << 7;                            //Clean column 7
 
-        //Check diagonals
+        //Check all
         for (int x = 0; x < 7; x++) {
             clone1 = (mask2 & clone1) >>> 7;
             clone2 = (mask1 & clone2) >>> 9;
-
-            if ( (clone1 & grid) != 0L || (clone2 & grid) != 0L)
+            clone3 = (mask1 & clone3) >>> 1;
+            clone4 >>>= 8;
+            if ((clone1 & grid) != 0L || (clone2 & grid) != 0L || (clone3 & grid) != 0L || (clone4 & grid) != 0L)
                 return false;
         }
 

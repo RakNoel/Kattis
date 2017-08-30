@@ -5,19 +5,35 @@ import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
 
+import java.util.ArrayList;
+
 import static Java.eightQueens.eightQueensBitwise.checkBitwiseGrid;
 import static junit.framework.TestCase.*;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class eqTest {
 
-    private static String[] fails = new String[4];
-    private static String[] valid = new String[4];
+    private static ArrayList<String> fails = new ArrayList<>();
+    private static ArrayList<String> valids = new ArrayList<>();
+
+    //TODO: Add later
+    private static ArrayList<String> permutationGrids = new ArrayList<>();
+    private static ArrayList<String> found = new ArrayList<>();
 
     @BeforeClass
     public static void before() {
 
-        fails[0] = ("*......." +
+        for (int[] x : genPermutations()) {
+            StringBuilder build = new StringBuilder();
+            for (int y : x) {
+                char[] base = {'.', '.', '.', '.', '.', '.', '.', '.'};
+                base[y] = '*';
+                build.append(base);
+            }
+            permutationGrids.add(build.toString());
+        }
+
+        fails.add("*......." +
                 "..*....." +
                 "....*..." +
                 "......*." +
@@ -27,7 +43,7 @@ public class eqTest {
                 "...*....");
 
         //Missing queen
-        fails[1] = ("*......." +
+        fails.add("*......." +
                 "....*..." +
                 ".......*" +
                 ".....*.." +
@@ -37,7 +53,7 @@ public class eqTest {
                 "........");
 
         //Vertical collision
-        fails[2] = ("*......." +
+        fails.add("*......." +
                 "....*..." +
                 ".......*" +
                 ".....*.." +
@@ -47,7 +63,7 @@ public class eqTest {
                 ".*......");
 
         //Horizontal collision
-        fails[3] = ("*......." +
+        fails.add("*......." +
                 "....*..." +
                 ".......*" +
                 ".....*.." +
@@ -57,7 +73,7 @@ public class eqTest {
                 "........");
 
         //Standard
-        valid[0] = ("*......." +
+        valids.add("*......." +
                 "......*." +
                 "....*..." +
                 ".......*" +
@@ -67,7 +83,7 @@ public class eqTest {
                 "..*.....");
 
         //Bitwise right filter test
-        valid[1] = (".......*" +
+        valids.add(".......*" +
                 ".*......" +
                 "...*...." +
                 "*......." +
@@ -77,17 +93,7 @@ public class eqTest {
                 ".....*..");
 
         //Bitwise left filter test
-        valid[2] = ("*......." +
-                "....*..." +
-                ".......*" +
-                ".....*.." +
-                "..*....." +
-                "......*." +
-                ".*......" +
-                "...*....");
-
-        //Bitwise left filter test
-        valid[3] = ("*......." +
+        valids.add("*......." +
                 "....*..." +
                 ".......*" +
                 ".....*.." +
@@ -99,19 +105,13 @@ public class eqTest {
 
     @Test
     public void BitTest() {
-        for (String grid : fails) {
-            long test = readBitGrid(grid);
-            if (test != 0x00)
-                assertFalse(checkBitwiseGrid(test));
-        }
+        for (String grid : fails)
+            if (BitGridCheck(grid))
+                fail("Grid " + grid + " is NOT True");
 
-        for (String grid : valid) {
-            long test = readBitGrid(grid);
-            if (test != 0x00)
-                assertTrue(checkBitwiseGrid(test));
-            else
-                fail("Invalid != Valid! " + grid);
-        }
+        for (String grid : valids)
+            if (!BitGridCheck(grid))
+                fail("Grid " + grid + " is NOT False");
     }
 
     @Test
@@ -121,7 +121,7 @@ public class eqTest {
             assertFalse(test.checkGrid());
         }
 
-        for (String grid : valid) {
+        for (String grid : valids) {
             queenGrid test = readGrid(grid);
             assertTrue(test.checkGrid());
         }
@@ -131,43 +131,95 @@ public class eqTest {
         queenGrid grid = new queenGrid(8, 8, '*');
         for (int i = 7; i >= 0; i--) {
             char[] line = g.substring(i * 8, ((i * 8) + 8)).toCharArray();
-
             for (int x = 0; x < 8; x++)
                 if (line[x] == '*') {
                     grid.setPos(x, i, 'q');
-//                        System.out.println(line);
-//                        System.out.println("Pos: [" + x + ", " + i + "]");
                     break;
                 }
         }
         return grid;
     }
 
-    private long readBitGrid(String g) {
+    private boolean BitGridCheck(String g) {
         long grid = 0x00;
-        byte columnCheck = 0x00;
+        int count = 0;
 
 //      Reads inn all values and adds them to a long for bitwise array
         for (byte row = 7; row >= 0; row--) {
-            boolean linecheck = false;
             char[] line = g.substring(row * 8, ((row * 8) + 8)).toCharArray();
-            for (byte x = 7, y = 0; x >= 0; x--, y++) {
-                if (line[y] == '*' && !linecheck) {
+            for (byte x = 7, y = 0; x >= 0; x--, y++)
+                if (line[y] == '*') {
                     grid |= (1L << (row * 8) + x);
+                    count++;
+                    break;
+                }
+        }
 
-                    //Row and column check while we're at it
-                    linecheck = true;
-                    columnCheck |= (byte) Math.pow(10, x);
-                } else if (line[y] == '*' && linecheck) {
-                    return 0x00;
+        return ((count == 8) && checkBitwiseGrid(grid));
+    }
+
+    /**
+     * A method to find all permutations 8! so that
+     * we can test all worst cases
+     *
+     * @author Ingrid Johansen
+     */
+    private static int[][] genPermutations() {
+
+        int ant = 40320;
+        int[][] gen = new int[ant][8];
+        int[] list = new int[8];
+        int counter = 0;
+
+        for (int i = 0; i < 8; i++) {
+            list[0] = i;
+
+            for (int j = 0; j < 8; j++) {
+                if (j != i) {
+                    list[1] = j;
+
+                    for (int k = 0; k < 8; k++) {
+                        if (k != i && k != j) {
+                            list[2] = k;
+
+                            for (int l = 0; l < 8; l++) {
+                                if (l != i && l != j && l != k) {
+                                    list[3] = l;
+
+                                    for (int m = 0; m < 8; m++) {
+                                        if (m != i && m != j && m != k && m != l) {
+                                            list[4] = m;
+
+                                            for (int n = 0; n < 8; n++) {
+                                                if (n != i && n != j && n != k && n != l && n != m) {
+                                                    list[5] = n;
+
+                                                    for (int o = 0; o < 8; o++) {
+                                                        if (o != i && o != j && o != k && o != l && o != m && o != n) {
+                                                            list[6] = o;
+
+                                                            for (int p = 0; p < 8; p++) {
+                                                                if (p != i && p != j && p != k && p != l && p != m && p != n && p != o) {
+                                                                    list[7] = p;
+                                                                    gen[counter] = list;
+                                                                    counter++;
+
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }
 
-        //Check if any of columns are used twice
-        if (columnCheck != -1)
-            return 0x00;
-
-        return grid;
+        return gen;
     }
 }

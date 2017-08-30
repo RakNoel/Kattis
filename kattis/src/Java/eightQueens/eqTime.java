@@ -5,27 +5,24 @@ import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
 
-import java.util.ArrayList;
 import java.util.Random;
+
+import static Java.eightQueens.eightQueensBitwise.checkBitwiseGrid;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class eqTime {
 
     private static String[] randomGrids = new String[8000000];
-    private static ArrayList<String> genGrids = new ArrayList<>();
 
     @BeforeClass
     public static void before() {
         generateRandomGrids();
+    }
 
-        for (int[] x : genPermutations()) {
-            StringBuilder build = new StringBuilder();
-            for (int y : x) {
-                char[] base = {'.', '.', '.', '.', '.', '.', '.', '.'};
-                base[y] = '*';
-                build.append(base);
-            }
-            genGrids.add(build.toString());
+    @Test
+    public void Aaa() {
+        for (String r : randomGrids) {
+            BitGridCheck(r);
         }
     }
 
@@ -38,7 +35,7 @@ public class eqTime {
         }
 
         long endTime = System.nanoTime();
-        System.out.printf("OoRndTime: %d %n", (endTime - startTime));
+        System.out.printf("%-12s : %10d %n", "OoRndTime", (endTime - startTime) / 1000);
     }
 
     @Test
@@ -50,43 +47,41 @@ public class eqTime {
         }
 
         long endTime = System.nanoTime();
-        System.out.printf("BitRndTime: %d %n", (endTime - startTime));
+        System.out.printf("%-12s : %10d %n", "BitRndTime", (endTime - startTime) / 1000);
     }
-
-    @Test
-    public void OOWorstTime() {
-        long startTime = System.nanoTime();
-
-        for (String g : genGrids) {
-            OOGridCheck(g);
-        }
-
-        long endTime = System.nanoTime();
-        System.out.printf("OoWorstTime: %d %n", (endTime - startTime));
-    }
-
-    @Test
-    public void BitWorstTime() {
-        long startTime = System.nanoTime();
-
-        for (String g : genGrids) {
-            BitGridCheck(g);
-        }
-
-        long endTime = System.nanoTime();
-        System.out.printf("BitWorstTime: %d %n", (endTime - startTime));
-    }
-
 
 
     private boolean OOGridCheck(String g) {
-        //TODO: Method body
-        return false;
+        queenGrid grid = new queenGrid(8, 8, '*');
+
+        for (int i = 7; i >= 0; i--) {
+            char[] line = g.toCharArray();
+            for (int x = 0; x < 8; x++)
+                if (line[x] == '*') {
+                    grid.setPos(x, i, 'q');
+                    break;
+                }
+        }
+
+        return grid.checkGrid();
     }
 
     private boolean BitGridCheck(String g) {
-        //TODO: Method body
-        return false;
+        long grid = 0x00;
+        int count = 0;
+
+//      Reads inn all values and adds them to a long for bitwise array
+        for (byte row = 7; row >= 0; row--) {
+            char[] line = g.toCharArray();
+            for (byte x = 7, y = 0; x >= 0; x--, y++)
+                if (line[y] == '*') {
+                    grid |= (1L << (row * 8) + x);
+                    count++;
+                    break;
+                }
+        }
+
+        return count == 8 && checkBitwiseGrid(grid);
     }
 
     /**
@@ -105,71 +100,5 @@ public class eqTime {
             }
             randomGrids[j] = genGrid.toString();
         }
-    }
-
-    /**
-     * A method to find all permutations 8! so that
-     * we can test all worst cases
-     *
-     * @author Ingrid Johansen
-     */
-    private static int[][] genPermutations() {
-
-        int ant = 40320;
-        int[][] gen = new int[ant][8];
-        int[] list = new int[8];
-        int counter = 0;
-
-        for (int i = 0; i < 8; i++) {
-            list[0] = i;
-
-            for (int j = 0; j < 8; j++) {
-                if (j != i) {
-                    list[1] = j;
-
-                    for (int k = 0; k < 8; k++) {
-                        if (k != i && k != j) {
-                            list[2] = k;
-
-                            for (int l = 0; l < 8; l++) {
-                                if (l != i && l != j && l != k) {
-                                    list[3] = l;
-
-                                    for (int m = 0; m < 8; m++) {
-                                        if (m != i && m != j && m != k && m != l) {
-                                            list[4] = m;
-
-                                            for (int n = 0; n < 8; n++) {
-                                                if (n != i && n != j && n != k && n != l && n != m) {
-                                                    list[5] = n;
-
-                                                    for (int o = 0; o < 8; o++) {
-                                                        if (o != i && o != j && o != k && o != l && o != m && o != n) {
-                                                            list[6] = o;
-
-                                                            for (int p = 0; p < 8; p++) {
-                                                                if (p != i && p != j && p != k && p != l && p != m && p != n && p != o) {
-                                                                    list[7] = p;
-                                                                    gen[counter] = list;
-                                                                    counter++;
-
-                                                                }
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        System.out.println(counter);
-        return gen;
     }
 }
