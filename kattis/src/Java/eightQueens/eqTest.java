@@ -1,14 +1,9 @@
 package Java.eightQueens;
 
-import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
-
-import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.Random;
 
 import static Java.eightQueens.eightQueensBitwise.checkBitwiseGrid;
 import static junit.framework.TestCase.*;
@@ -16,16 +11,11 @@ import static junit.framework.TestCase.*;
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class eqTest {
 
-    private static String[] randomGrids = new String[1000000];
     private static String[] fails = new String[4];
     private static String[] valid = new String[4];
 
-    //Save to if found
-    private static ArrayList<String> valids = new ArrayList<>();
-
     @BeforeClass
     public static void before() {
-        generateRandomGrids();
 
         fails[0] = ("*......." +
                 "..*....." +
@@ -108,32 +98,6 @@ public class eqTest {
     }
 
     @Test
-    public void OORndTime() {
-        long startTime = System.nanoTime();
-        for (String g : randomGrids)
-            readGrid(g).checkGrid();
-        long endTime = System.nanoTime();
-        System.out.printf("OoRndTime: %d %n", (endTime - startTime));
-    }
-
-    @Test
-    public void BitRndTime() {
-        long startTime = System.nanoTime();
-
-        for (String g : randomGrids) {
-            long grid = readBitGrid(g);
-            if (grid != 0x00) {
-                if (checkBitwiseGrid(grid))
-                    valids.add(g);
-            } else
-                break;
-        }
-
-        long endTime = System.nanoTime();
-        System.out.printf("BitRndTime: %d %n", (endTime - startTime));
-    }
-
-    @Test
     public void BitTest() {
         for (String grid : fails) {
             long test = readBitGrid(grid);
@@ -160,32 +124,6 @@ public class eqTest {
         for (String grid : valid) {
             queenGrid test = readGrid(grid);
             assertTrue(test.checkGrid());
-        }
-    }
-
-    @Test
-    public void BitTime(){
-        for (int i = 0; i < 1; i++)
-            BitTest();
-    }
-
-    @AfterClass
-    public static void saveValids() {
-        try {
-            if (valids.size() == 0)
-                return;
-
-            PrintWriter sOut = new PrintWriter("valids.txt", "UTF-8");
-            sOut.println("Valid tests:");
-
-            System.out.println("Saving valid tests:");
-            for (String a : valids) {
-                sOut.println(a);
-                System.out.println(a);
-            }
-            sOut.close();
-        } catch (Exception ignored) {
-            ignored.printStackTrace();
         }
     }
 
@@ -231,19 +169,5 @@ public class eqTest {
             return 0x00;
 
         return grid;
-    }
-
-    private static void generateRandomGrids() {
-        //Generate 8'000'000 test strings
-        Random rnd = new Random();
-        for (int j = 0; j < randomGrids.length; j++) {
-            StringBuilder genGrid = new StringBuilder();
-            for (int i = 0; i < 8; i++) {
-                char[] genStr = {'.', '.', '.', '.', '.', '.', '.', '.'};
-                genStr[rnd.nextInt(8)] = '*';
-                genGrid.append(genStr);
-            }
-            randomGrids[j] = genGrid.toString();
-        }
     }
 }
