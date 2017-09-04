@@ -12,7 +12,7 @@ import static Java.eightQueens.eightQueensBitwise.checkBitwiseGrid;
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class eqTime {
 
-    private static String[] randomGrids = new String[8000000];
+    private static String[] randomGrids = new String[8*7*6*5*4*3*2];
 
     @BeforeClass
     public static void before() {
@@ -62,7 +62,6 @@ public class eqTime {
                     break;
                 }
         }
-
         return grid.checkGrid();
     }
 

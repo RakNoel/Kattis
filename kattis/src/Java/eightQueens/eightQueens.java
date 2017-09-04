@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 //Created by RakNoel, 02.04.2017.
+//testcomment
 public class eightQueens {
     public static void main(String[] args) {
         Scanner scn = new Scanner(System.in);
@@ -19,8 +20,6 @@ public class eightQueens {
                     break;
                 }
         }
-
-
 
         System.out.println((grid.checkGrid()) ? "valid" : "invalid");
 

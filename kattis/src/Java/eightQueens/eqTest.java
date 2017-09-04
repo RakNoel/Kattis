@@ -16,7 +16,6 @@ public class eqTest {
     private static ArrayList<String> fails = new ArrayList<>();
     private static ArrayList<String> valids = new ArrayList<>();
 
-    //TODO: Add later
     private static ArrayList<String> permutationGrids = new ArrayList<>();
     private static ArrayList<String> found = new ArrayList<>();
 
@@ -112,6 +111,10 @@ public class eqTest {
         for (String grid : valids)
             if (!BitGridCheck(grid))
                 fail("Grid " + grid + " is NOT False");
+
+        for (String grid : permutationGrids)
+            if (BitGridCheck(grid))
+                found.add(grid);
     }
 
     @Test
