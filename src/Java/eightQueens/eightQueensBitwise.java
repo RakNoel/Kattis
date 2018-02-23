@@ -31,6 +31,7 @@ public class eightQueensBitwise {
         long clone2 = grid; // \
         long clone3 = grid; // -
         long clone4 = grid; // |
+
         long mask1 = ~Long.valueOf("72340172838076673");    //Clean column 0
         long mask2 = mask1 << 7;                            //Clean column 7
 
